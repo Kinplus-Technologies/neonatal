@@ -52,6 +52,7 @@ switch($method){
 		break;
 
 	case 'PUT': 
+	case 'PATCH': 
 		$data = json_decode(file_get_contents("php://input")); // Get raw posted data
 		$id = $data->id;
 		$modified_by = json_encode($data->modified_by);
@@ -88,7 +89,8 @@ switch($method){
 	case 'DELETE':		
 		$id = $_SERVER['QUERY_STRING'];			
 		$res = deleteRecord($table, "id= :id",['id'=>$id]) ;
-		echo $res ? json_encode(selectRecords($table, $json_fields, "1 ORDER BY created_on ASC")) : 'Unable to delete record';
+		echo $res ? json_encode(['ok' => 1]) : json_encode(['ok' => 0]);
+		// echo $res ? json_encode(selectRecords($table, $json_fields, "1 ORDER BY created_on ASC")) : 'Unable to delete record';
 		break;
 	default:
 		break;
